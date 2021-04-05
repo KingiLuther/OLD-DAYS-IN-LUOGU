@@ -1,0 +1,38 @@
+/*用a[ｉ][ｊ]求出前ｊ个颜色ｉ的有几个（时间nk）；
+枚举左端点；
+找到离左端点最近的满足要求的咖啡馆；
+用前缀和累加，找到右边满足的旅馆有几个：总旅馆数a[cc][ｎ]-咖啡馆左边的旅馆数a[cc][flag-1]；
+（为了防止咖啡馆和旅馆重复，当咖啡馆=旅馆时+1）*/
+#include<bits/stdc++.h>
+#define M 200001
+using namespace std;
+int ans,a[50][M],c[M],v[M],k,n,p;
+int main()
+{
+    int cc,i,j,flag;
+    cin>>n>>k>>p;
+    for(i=1;i<=n;i++)
+    {
+        cin>>c[i]>>v[i];
+        for(j=0;j<k;j++)
+            a[j][i]=a[j][i-1];
+        a[c[i]][i]++;
+    }
+    for(i=1;i<n;i++)
+    {
+        cc=c[i];
+        flag=n+1;
+        for(j=i;j<=n;j++)//找到离i最近的咖啡馆 
+        {
+            if(v[j]<=p)
+            {
+                flag=j;
+                if(flag==i)flag++; //当咖啡馆就是旅馆时特殊处理一下
+                break;
+            }
+        }
+        ans+=(a[cc][n]-a[cc][flag-1]);右边的旅馆数
+    }
+    cout<<ans;
+    return 0;
+}
